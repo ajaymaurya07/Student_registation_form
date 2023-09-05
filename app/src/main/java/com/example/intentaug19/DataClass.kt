@@ -7,5 +7,6 @@ data class DataClass(
     var phone:String,
     var mail:String,
     var gender:String,
-    var checkdata:MutableList<String>
+    var checkdata:MutableList<String>,
+    var dobdata:String
 )

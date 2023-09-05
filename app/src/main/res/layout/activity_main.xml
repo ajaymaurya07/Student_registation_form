@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".MainActivity"
     android:orientation="vertical"
    >
     
-
     <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="100dp">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guest User!"
+        android:textStyle="italic"
+        android:id="@+id/guest_user"
+        android:layout_gravity="end"
+        android:textColor="@color/purple_500"
+        android:padding="5dp"/>
 
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/first_name"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:endIconMode="clear_text"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -44,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/second_name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-        android:layout_marginBottom="5dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_marginBottom="8dp"
         app:endIconMode="clear_text"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -59,11 +68,11 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/last_name"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="8dp"
         app:endIconMode="clear_text"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -77,11 +86,11 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/phone_number"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="8dp"
         app:endIconMode="clear_text"
         app:prefixText="+91"
         >
@@ -95,11 +104,11 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/mail_id"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="8dp"
         app:endIconMode="clear_text"
         >
         <com.google.android.material.textfield.TextInputEditText
@@ -113,22 +122,20 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="8dp"
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/baseline_calendar_month_24"
+            android:id="@+id/dob"
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Select Bob"
                 android:inputType="date"
-                android:maxLength="25"
-                android:id="@+id/dob"
-                android:drawableRight="@drawable/baseline_calendar_month_24"
-                android:clickable="true"
-
-
+                android:maxLength="10"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,7 +143,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="1dp"
+        android:padding="5dp"
         android:text="Select gender"
         android:id="@+id/select_genter_text"/>
 
@@ -172,7 +179,7 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="1dp"
+        android:padding="5dp"
         android:text="Select Skills"
         android:id="@+id/select_hobbies"/>
 
@@ -228,4 +235,4 @@
   </LinearLayout>
 
 
-</LinearLayout>
+</ScrollView>

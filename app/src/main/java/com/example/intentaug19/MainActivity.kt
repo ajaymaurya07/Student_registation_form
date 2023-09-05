@@ -1,17 +1,12 @@
 package com.example.intentaug19
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextWatcher
-import android.util.Patterns
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -54,7 +49,7 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         date=calendar.get(Calendar.DATE)
         month=calendar.get(Calendar.MONTH)
         year=calendar.get(Calendar.YEAR)
-        binding.dob.setText("${date}/${month+1}/${year}")
+
 
         fname=binding.firstName
         sname=binding.secondName
@@ -88,27 +83,27 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         mailid.editText!!.addTextChangedListener {
             mailid.error=null
         }
-
-        binding.dob.setOnTouchListener { view, motionEvent ->
-//            var drawable = binding.dob.compoundDrawablesRelative[2]
-//            if (drawable != null) {
-//                val drawableWidth = drawable.bounds.width()
-//                val touchX = motionEvent.rawX.toInt()
-//                val editTextRight = binding.dob.right
-//                val drawableStart = editTextRight - drawableWidth
-//
-//                if (touchX >= drawableStart) {
-                    // Click event occurred on the drawableEnd
-                    // Perform your action here
-                    var datePickerDialog=DatePickerDialog(this)
-                    datePickerDialog.show()
-//                    return@setOnTouchListener true
-//                }
-//
-//            }
-            true
+        binding.dob.editText!!.addTextChangedListener {
+            binding.dob.error=null
         }
 
+        binding.dob.editText!!.setText("${date}/${month+1}/$year")
+        var stringData="${date}/${month+1}/$year"
+
+        binding.dob.setEndIconOnClickListener {
+            var datePickerDialog=DatePickerDialog(this)
+                datePickerDialog.setOnDateSetListener { datePicker, i, i2, i3 ->
+                    date=i3
+                    month=i2
+                    year=i
+                }
+            datePickerDialog.show()
+        }
+
+        var preferance=getSharedPreferences("_login", MODE_PRIVATE)
+        var temp=preferance.getString(KeysIntent.userName,"Guest User")
+
+        binding.guestUser.text="Welcome:$temp"
 
 
         submitbtn.setOnClickListener {
@@ -182,8 +177,16 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
 //                binding.selectHobbies.text="Select minimam one skills"
                 binding.selectHobbies.setTextColor(Color.BLACK)
             }
+            var tx=regexdob(binding.dob.editText!!.text.toString())
+            if( tx ==false){
+                binding.dob.error="Envalid DOB"
+            }
+            if(tx==true){
+                binding.dob.error=null
+            }
 
-            if(f_name.isNotEmpty() && l_name.isNotEmpty() && phone_no.isNotEmpty() && mail_id.isNotEmpty() && selected_id!=-1 && list.size>=1 &&phone_no.length==10 && mailvalid==true && phonevalid==true){
+
+            if(f_name.isNotEmpty() && l_name.isNotEmpty() && phone_no.isNotEmpty() && mail_id.isNotEmpty() && selected_id!=-1 && list.size>=1 &&phone_no.length==10 && mailvalid==true && phonevalid==true && tx==true){
                 var intent=Intent(this,MainActivity2::class.java)
 
 //                data send as a throught of intent explicit intent
@@ -195,7 +198,7 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
 //                intent.putExtra(KeysIntent.mail,mail_id)
 
 
-                var data=DataClass(f_name,l_name,s_name,phone_no,mail_id,cbtn.text.toString(), list)
+                var data=DataClass(f_name,l_name,s_name,phone_no,mail_id,cbtn.text.toString(), list,stringData)
                 intent.putExtra(KeysIntent.PERSON_DATA,Gson().toJson(data))
 
 
@@ -298,8 +301,13 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
     }
 
     fun regexphoneno(phone:String):Boolean{
-        var matchregex="^9876[0-9]{6}$"
+        var matchregex="^[9876]{1}[0-9]{9}$"
         return phone.matches(matchregex.toRegex())
+    }
+
+    fun regexdob(dob:String):Boolean{
+        var matchregex="^[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}$"
+        return dob.matches(matchregex.toRegex())
     }
 
     override fun onBackPressed() {
@@ -312,8 +320,5 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         builder.setNegativeButton("No", null) // Do nothing if "No" is clicked
         builder.show()
     }
-
-
-
 
 }

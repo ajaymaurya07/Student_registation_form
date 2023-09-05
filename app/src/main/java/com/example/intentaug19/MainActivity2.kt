@@ -40,15 +40,13 @@ class MainActivity2 : AppCompatActivity() {
         binding.resPhone.text="Phone : ${objectdata.phone}"
         binding.resMail.text="Gmail  : ${objectdata.mail}"
         binding.resGender.text="Gender: ${objectdata.gender}"
+        binding.dob.text="DOB : ${objectdata.dobdata}"
         binding.resSkill.text="Skills  : ${checkedData}"
 
 //        var bundledata=data.getBundleExtra("temp")!!
 //        var fname=bundledata.getString(KeysIntent.fname)!!
 //        var lname=bundledata.getString(KeysIntent.lname)
-
 //        textView.text="${fname} ${lname}"
-
-
 
     }
 }
