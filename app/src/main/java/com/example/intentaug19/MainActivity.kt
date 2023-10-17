@@ -1,18 +1,24 @@
 package com.example.intentaug19
 
+import MyDb
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
+import com.example.intentaug19.databinding.ActivityHistoryDataPageBinding
 import com.example.intentaug19.databinding.ActivityMainBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
@@ -34,7 +40,7 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
     var month:Int=0
     var year:Int=0
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint("MissingInflatedId", "SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,6 +57,9 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         year=calendar.get(Calendar.YEAR)
 
 
+
+
+
         fname=binding.firstName
         sname=binding.secondName
         lname=binding.lastName
@@ -59,6 +68,10 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
         rdogroup=binding.radioGroup
         submitbtn=binding.submitBtn
         gentertxt=binding.selectGenterText
+
+        val myDb=MyDb(this)
+
+
 
 
 
@@ -87,23 +100,39 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
             binding.dob.error=null
         }
 
-        binding.dob.editText!!.setText("${date}/${month+1}/$year")
-        var stringData="${date}/${month+1}/$year"
-
+        lateinit var stringData:String
         binding.dob.setEndIconOnClickListener {
             var datePickerDialog=DatePickerDialog(this)
                 datePickerDialog.setOnDateSetListener { datePicker, i, i2, i3 ->
                     date=i3
                     month=i2
                     year=i
+                    binding.dobText.setText("${date}/${month+1}/$year")
+                    stringData="${date}/${month+1}/$year"
                 }
             datePickerDialog.show()
         }
 
+
+
+
         var preferance=getSharedPreferences("_login", MODE_PRIVATE)
         var temp=preferance.getString(KeysIntent.userName,"Guest User")
+        var logincheck=preferance.getBoolean(KeysIntent.flag,false)
+        if(logincheck){
+            binding.guestUser.text="Welcome:$temp"
+        }
+        else{
+            binding.guestUser.text="Welcome:Guest User"
+        }
+        binding.logout.setOnClickListener {
+            var editor=preferance.edit()
+            editor.putBoolean(KeysIntent.flag,false)
+            editor.commit()
+            var intent =Intent(this@MainActivity,LoginActivity::class.java)
+            startActivity(intent)
+        }
 
-        binding.guestUser.text="Welcome:$temp"
 
 
         submitbtn.setOnClickListener {
@@ -197,6 +226,12 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
 //                intent.putExtra(KeysIntent.phone,phone_no)
 //                intent.putExtra(KeysIntent.mail,mail_id)
 
+                var skilldata=""
+                for (i in list){
+                    skilldata+="${i} ,"
+                }
+
+                myDb.addData(f_name,s_name,l_name,phone_no,mail_id,stringData,cbtn.text.toString(),skilldata)
 
                 var data=DataClass(f_name,l_name,s_name,phone_no,mail_id,cbtn.text.toString(), list,stringData)
                 intent.putExtra(KeysIntent.PERSON_DATA,Gson().toJson(data))
@@ -240,6 +275,23 @@ class MainActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener
 
 
     }
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.option_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.history_data->{
+                var intent=Intent(this@MainActivity,HistoryDataPage::class.java)
+                startActivity(intent)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 //    override fun onRequestPermissionsResult(
 //        requestCode: Int,
